@@ -8,7 +8,7 @@ const ora = require('ora');
 const chalk = require('chalk');
 const symbols = require('log-symbols');
 
-program.version('1.0.0', '-v, --version')
+program.version('1.0.5', '-v, --version')
 	.command('init <name>')
     .action((name) => {
         if(!fs.existsSync(name)){
@@ -24,7 +24,7 @@ program.version('1.0.0', '-v, --version')
             ]).then((answers) => {
                 const spinner = ora('正在下载模板...');
                 spinner.start();
-				download('https://github.com/ococa/scaffolds.git', name, {clone: true}, (err) => {
+				download('ococa/scaffolds', name, {clone: true}, (err) => {
                     if(err){
                         spinner.fail();
                         console.log(symbols.error, chalk.red(err));
