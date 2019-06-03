@@ -8,7 +8,9 @@ const ora = require('ora');
 const chalk = require('chalk');
 const symbols = require('log-symbols');
 
-program.version('1.0.5', '-v, --version')
+const packageVersion = `${require('./package').version}`
+
+program.version(packageVersion, '-v, --version')
 	.command('init <name>')
     .action((name) => {
         if(!fs.existsSync(name)){
@@ -30,18 +32,46 @@ program.version('1.0.5', '-v, --version')
                         console.log(symbols.error, chalk.red(err));
                     }else{
                         spinner.succeed();
-                        const fileName = `${name}/package.json`;
                         const meta = {
                             name,
                             description: answers.description,
                             author: answers.author
                         }
-                        if(fs.existsSync(fileName)){
-                            const content = fs.readFileSync(fileName).toString();
-                            const result = handlebars.compile(content)(meta);
-                            fs.writeFileSync(fileName, result);
-                        }
-                        console.log(symbols.success, chalk.green('项目初始化完成'));
+                        // 修改package.json配置
+                        fs.readFile(`./${name}/package.json`, 'utf8', function (err, data) {
+                          if(err) {
+                            spinner.stop();
+                            console.error(err);
+                            return;
+                          }
+                          const packageJson = JSON.parse(data);
+                          packageJson.name = meta.name;
+                          packageJson.description = meta.description;
+                          packageJson.author = meta.author;
+                          var updatePackageJson = JSON.stringify(packageJson, null, 2);
+                          fs.writeFile(`./${name}/package.json`, updatePackageJson, 'utf8', function (err) {
+                            if(err) {
+                              spinner.stop();
+                              console.error(err);
+                              return;
+                            } else {
+                              spinner.stop();
+                              console.log(symbols.success, chalk.green('项目初始化完成'));
+                              console.log(`
+                                  ${chalk.bgWhite.black('   Run Application  ')}
+                                  ${chalk.yellow(`cd ${name}`)}
+      
+                                  ${chalk.yellow('yarn')}
+      
+                                  ${chalk.yellow('npm start')}
+      
+                                  ${chalk.yellow('npm build')}
+      
+                                  ${chalk.yellow('npm test')}
+                                `);
+                            }
+                          });
+                        });
                     }
                 })
             })
