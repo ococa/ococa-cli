@@ -1,3 +1,10 @@
+
+## 配置模版
+https://github.com/ococa/scaffolds
+
+
+
+
 ## 脚手架用到的依赖
 - download-git-repo，下载并提取 git 仓库，用于下载项目模板。
 - Inquirer.js，通用的命令行用户界面集合，用于和用户进行交互。
