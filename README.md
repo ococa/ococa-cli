@@ -3,6 +3,24 @@
 https://github.com/ococa/scaffolds
 
 
+## 使用方式
+
+1. 全局安装
+```
+npm install yarx -g
+```
+or 
+```
+yarn add yarx -g
+```
+
+2. 初始化项目
+```
+yarx -init <projectName>
+```
+建立项目
+
+
 
 
 ## 脚手架用到的依赖
