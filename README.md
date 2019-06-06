@@ -16,7 +16,7 @@ yarn add yarx -g
 
 2. 初始化项目
 ```
-yarx -init <projectName>
+yarx init <projectName>
 ```
 建立项目
 
