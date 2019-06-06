@@ -7,6 +7,7 @@ const inquirer = require('inquirer');
 const ora = require('ora');
 const chalk = require('chalk');
 const symbols = require('log-symbols');
+const shell = require('shelljs');
 
 const packageVersion = `${require('./package').version}`
 
@@ -56,19 +57,44 @@ program.version(packageVersion, '-v, --version')
                   return;
                 } else {
                   spinner.stop();
-                  console.log(symbols.success, chalk.green('项目初始化完成'));
-                  console.log(`
+                  shell.cd(name);
+                  const npminstall = ora('正在安装依赖...');
+                  npminstall.start();
+                  shell.exec('npm install', function (code, stdout, stderr) {
+                    if (stdout) {
+                      console.log('Program output:', stdout);
+                      console.log(symbols.success, chalk.green('项目初始化完成'));
+                      console.log(`
                                   ${chalk.bgWhite.black('   Run Application  ')}
+                                  
                                   ${chalk.yellow(`cd ${name}`)}
       
-                                  ${chalk.yellow('yarn')}
+                                  ${chalk.yellow('npm run start')}
       
-                                  ${chalk.yellow('npm start')}
+                                  ${chalk.yellow('npm run build')}
       
-                                  ${chalk.yellow('npm build')}
+                                  ${chalk.yellow('npm run test')}
+
+                                  ${chalk.green(`or`)}
+
+                                  ${chalk.yellow(`cd ${name}`)}
       
-                                  ${chalk.yellow('npm test')}
+                                  ${chalk.yellow('yarn run start')}
+      
+                                  ${chalk.yellow('yarn run build')}
+      
+                                  ${chalk.yellow('yarn run test')}
                                 `);
+                        npminstall.stop();
+                      return;
+                    }
+                    else {
+                      // npminstall.fail();
+                      console.log('Exit code:', chalk.red(code));
+                      console.log('Program stderr:', chalk.red(stderr));
+                      return;
+                    }
+                  })
                 }
               });
             });
