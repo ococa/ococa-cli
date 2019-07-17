@@ -27,7 +27,7 @@ program.version(packageVersion, '-v, --version')
       ]).then((answers) => {
         const spinner = ora('正在下载模板...');
         spinner.start();
-        download('github:ococa/scaffolds#master', name, { clone: true }, (err) => {
+        download('direct:https://github.com/ococa/scaffolds.git#master', name, { clone: true }, (err) => {
           if (err) {
             spinner.fail();
             console.log(symbols.error, chalk.red(err));
