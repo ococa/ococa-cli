@@ -11,7 +11,7 @@ const shell = require('shelljs');
 
 const packageVersion = `${require('./package').version}`
 
-program.version(packageVersion, '-v, --version')
+program.version(packageVersion, '-v, --version， -version')
   .command('init <name>')
   .action((name) => {
     if (!fs.existsSync(name)) {
